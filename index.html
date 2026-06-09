@@ -1,0 +1,3869 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Foodie Spot - moderné ázijské jedlá, sushi, polievky a nápoje v Petržalke. Objednávky a rezervácie online cez e-mail.">
+  <title>Foodie Spot | Ázijské jedlá v Petržalke</title>
+
+  <style>
+    /* =========================
+       Základné nastavenia a farby
+       ========================= */
+    :root {
+      --color-black: #070707;
+      --color-charcoal: #111111;
+      --color-panel: #181818;
+      --color-gold: #d7a33a;
+      --color-gold-light: #f4d783;
+      --color-cream: #fff8e8;
+      --color-muted: #c7c0b0;
+      --color-line: rgba(215, 163, 58, 0.28);
+      --color-wine: #661f28;
+      --color-olive: #2f5d4b;
+      --color-green: #3c8b67;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.44);
+      --shadow-gold: 0 18px 44px rgba(215, 163, 58, 0.2);
+      --radius: 8px;
+      --header-height: 76px;
+      --container: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 20px);
+    }
+
+    body {
+      margin: 0;
+      color: var(--color-cream);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 64px 64px,
+        linear-gradient(180deg, #090909 0%, #050505 58%, #0b0806 100%);
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    body::selection {
+      color: #111111;
+      background: var(--color-gold-light);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section {
+      position: relative;
+      padding: 98px 0;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--color-gold-light);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-kicker::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: var(--color-gold);
+    }
+
+    .section-title {
+      margin: 0;
+      color: #ffffff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 720px;
+      margin: 16px 0 0;
+      color: var(--color-muted);
+      font-size: 1.05rem;
+    }
+
+    .btn {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: -40% auto -40% -70%;
+      z-index: -1;
+      width: 48%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.44), transparent);
+      transform: skewX(-22deg);
+      transition: left 620ms ease;
+    }
+
+    .btn:hover::before {
+      left: 118%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #111111;
+      background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+      box-shadow: var(--shadow-gold);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 18px 44px rgba(215, 163, 58, 0.26);
+    }
+
+    .btn-outline {
+      color: var(--color-cream);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--color-line);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-gold);
+      background: rgba(215, 163, 58, 0.12);
+    }
+
+    .icon {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .scroll-progress {
+      position: fixed;
+      z-index: 1200;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light), var(--color-wine));
+      box-shadow: 0 0 20px rgba(244, 215, 131, 0.42);
+      pointer-events: none;
+    }
+
+    /* =========================
+       Header a navigácia
+       ========================= */
+    .site-header {
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      right: 0;
+      left: 0;
+      background: rgba(7, 7, 7, 0.88);
+      border-bottom: 1px solid var(--color-line);
+      backdrop-filter: blur(18px);
+      transition: background 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .site-header.is-scrolled {
+      background: rgba(7, 7, 7, 0.96);
+      border-color: rgba(244, 215, 131, 0.34);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: var(--header-height);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      color: #111111;
+      background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+      border-radius: var(--radius);
+      font-size: 1.05rem;
+      box-shadow: var(--shadow-gold);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(17, 17, 17, 0.34);
+      border-radius: 5px;
+    }
+
+    .brand-text {
+      display: grid;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      color: #ffffff;
+    }
+
+    .brand-location {
+      color: var(--color-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .main-nav a {
+      position: relative;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      color: var(--color-muted);
+      font-size: 0.94rem;
+      font-weight: 800;
+      transition: color 180ms ease, background 180ms ease;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      bottom: 6px;
+      left: 12px;
+      height: 1px;
+      background: var(--color-gold-light);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 180ms ease;
+    }
+
+    .main-nav a:hover {
+      color: #ffffff;
+      background: rgba(215, 163, 58, 0.12);
+    }
+
+    .main-nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .call-button {
+      min-height: 42px;
+      padding: 9px 13px;
+      white-space: nowrap;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      color: var(--color-cream);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .nav-toggle span,
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      margin: 0 auto;
+      background: currentColor;
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      content: "";
+      position: relative;
+    }
+
+    .nav-toggle span::before {
+      top: -7px;
+    }
+
+    .nav-toggle span::after {
+      top: 5px;
+    }
+
+    .nav-toggle[aria-expanded="true"] span {
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle[aria-expanded="true"] span::before {
+      transform: translateY(7px) rotate(90deg);
+    }
+
+    .nav-toggle[aria-expanded="true"] span::after {
+      opacity: 0;
+    }
+
+    /* =========================
+       Hero sekcia
+       ========================= */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: calc(var(--header-height) + 52px) 0 74px;
+      overflow: hidden;
+      background: #070707;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        url("MENU FOODIE SPOT/39. Kuracie Grilované s arašidovou omáčkou.jpg") 58% 52% / cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 18s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, rgba(7, 7, 7, 0.98) 0%, rgba(7, 7, 7, 0.88) 44%, rgba(7, 7, 7, 0.48) 78%, rgba(7, 7, 7, 0.78) 100%),
+        linear-gradient(135deg, rgba(215, 163, 58, 0.14), transparent 36%),
+        linear-gradient(0deg, var(--color-black), transparent 24%, transparent 74%, rgba(7, 7, 7, 0.86));
+      pointer-events: none;
+    }
+
+    .hero-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(330px, 0.68fr);
+      gap: clamp(28px, 4vw, 52px);
+      align-items: center;
+      padding: clamp(20px, 3vw, 34px);
+      background: linear-gradient(135deg, rgba(9, 9, 9, 0.8), rgba(9, 9, 9, 0.42));
+      border: 1px solid rgba(244, 215, 131, 0.24);
+      border-radius: var(--radius);
+      box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    .hero-content::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      left: -16px;
+      width: 84px;
+      height: 84px;
+      border-top: 1px solid var(--color-line);
+      border-left: 1px solid var(--color-line);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      color: var(--color-gold-light);
+      background: rgba(215, 163, 58, 0.12);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      animation: fadeSlideUp 760ms ease both;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: rgba(255, 248, 232, 0.76);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      animation: fadeSlideUp 720ms 60ms ease both;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: "";
+      width: 36px;
+      height: 1px;
+      background: var(--color-gold);
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: #ffffff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: clamp(2.8rem, 6.8vw, 6.35rem);
+      line-height: 0.94;
+      letter-spacing: 0;
+      text-wrap: balance;
+      animation: fadeSlideUp 880ms 140ms ease both;
+    }
+
+    .hero p {
+      max-width: 610px;
+      margin: 26px 0 0;
+      color: #eee3cf;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      animation: fadeSlideUp 880ms 230ms ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+      animation: fadeSlideUp 880ms 320ms ease both;
+    }
+
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 760px;
+      margin-top: 42px;
+      animation: fadeSlideUp 880ms 410ms ease both;
+    }
+
+    .hero-fact {
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(17, 17, 17, 0.78), rgba(12, 12, 12, 0.58));
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-fact::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(244, 215, 131, 0.86), transparent);
+      transform: translateX(-100%);
+      animation: lineSweep 4.8s ease-in-out infinite;
+    }
+
+    .hero-fact strong {
+      display: block;
+      color: #ffffff;
+      font-size: 1.08rem;
+      line-height: 1.25;
+    }
+
+    .hero-fact span {
+      display: block;
+      margin-top: 4px;
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 12px;
+      min-height: 0;
+      animation: fadeSlideUp 900ms 260ms ease both;
+    }
+
+    .hero-dish-card {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+        rgba(9, 9, 9, 0.82);
+      border: 1px solid rgba(244, 215, 131, 0.34);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-dish-card::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      z-index: 2;
+      border: 1px solid rgba(244, 215, 131, 0.18);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .hero-dish-card img {
+      width: 100%;
+      height: clamp(280px, 34vw, 390px);
+      object-fit: contain;
+      object-position: center;
+      padding: 14px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(244, 215, 131, 0.14), transparent 52%),
+        #101010;
+      filter: saturate(1.08) contrast(1.04);
+      transition: transform 900ms ease;
+    }
+
+    .hero-dish-card:hover img {
+      transform: scale(1.045);
+    }
+
+    .hero-dish-info {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .hero-dish-kicker {
+      color: var(--color-gold-light);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .hero-dish-info h2 {
+      margin: 0;
+      color: #ffffff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.65rem, 3vw, 2.35rem);
+      line-height: 1.05;
+    }
+
+    .hero-dish-info p {
+      margin: 0;
+      color: var(--color-muted);
+      font-size: 0.96rem;
+    }
+
+    .hero-dish-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .hero-dish-price {
+      color: #111111;
+      background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .hero-mini-card {
+      position: relative;
+      z-index: 4;
+      max-width: none;
+      padding: 15px 16px;
+      background: rgba(7, 7, 7, 0.78);
+      border: 1px solid rgba(244, 215, 131, 0.28);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(14px);
+      animation: fadeSlideUp 760ms 360ms ease both;
+    }
+
+    .hero-mini-card.top {
+      order: -1;
+    }
+
+    .hero-mini-card.bottom {
+      animation-delay: 420ms;
+    }
+
+    .hero-mini-card strong {
+      display: block;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .hero-mini-card span {
+      display: block;
+      margin-top: 4px;
+      color: var(--color-muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .hero-scrollcue {
+      position: absolute;
+      right: clamp(18px, 4vw, 56px);
+      bottom: 34px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 248, 232, 0.74);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      animation: floatCue 2.6s ease-in-out infinite;
+    }
+
+    .hero-scrollcue::after {
+      content: "";
+      width: 1px;
+      height: 54px;
+      background: linear-gradient(var(--color-gold-light), transparent);
+    }
+
+    .luxury-strip {
+      overflow: hidden;
+      background: #090909;
+      border-top: 1px solid var(--color-line);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .luxury-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .luxury-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 22px;
+      color: rgba(255, 248, 232, 0.82);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .luxury-track span::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      background: var(--color-gold);
+      border-radius: 999px;
+      box-shadow: 0 0 18px rgba(244, 215, 131, 0.48);
+    }
+
+    /* =========================
+       O nás
+       ========================= */
+    .about {
+      background:
+        linear-gradient(180deg, rgba(7, 7, 7, 0.8), rgba(13, 13, 13, 0.98)),
+        repeating-linear-gradient(90deg, rgba(215, 163, 58, 0.06) 0 1px, transparent 1px 120px);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.94fr) minmax(330px, 1.06fr);
+      gap: 54px;
+      align-items: center;
+    }
+
+    .about-text {
+      max-width: 720px;
+    }
+
+    .about-list {
+      display: grid;
+      gap: 14px;
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .about-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: var(--color-muted);
+    }
+
+    .about-list li::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      margin-top: 8px;
+      flex: 0 0 auto;
+      background: var(--color-gold);
+      border-radius: 999px;
+      box-shadow: 0 0 0 6px rgba(215, 163, 58, 0.12);
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .about-stat {
+      padding: 16px 14px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+    }
+
+    .about-stat strong {
+      display: block;
+      color: var(--color-gold-light);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .about-stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--color-muted);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .about-gallery {
+      position: relative;
+      display: grid;
+      grid-template-columns: 0.74fr 0.26fr;
+      grid-template-rows: 260px 210px;
+      gap: 14px;
+      min-height: 520px;
+    }
+
+    .about-media {
+      position: relative;
+      min-height: 100%;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--color-line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .about-media.main {
+      grid-row: 1 / 3;
+    }
+
+    .about-media.secondary {
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 52%, rgba(0, 0, 0, 0.44));
+      pointer-events: none;
+    }
+
+    .about-media img {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: var(--focus, center);
+      transition: transform 900ms ease;
+    }
+
+    .about-media.focus-sushi {
+      --focus: 50% 55%;
+    }
+
+    .about-media.focus-noodles {
+      --focus: 50% 52%;
+    }
+
+    .about-media.focus-drink {
+      --focus: 50% 48%;
+    }
+
+    .about-media:hover img {
+      transform: scale(1.05);
+    }
+
+    .about-label {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 2;
+      max-width: 260px;
+      padding: 14px 16px;
+      background: rgba(7, 7, 7, 0.82);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+    }
+
+    .about-label strong {
+      display: block;
+      color: var(--color-gold-light);
+      font-size: 1.1rem;
+    }
+
+    .about-label span {
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================
+       Menu
+       ========================= */
+    .menu {
+      background:
+        linear-gradient(180deg, rgba(215, 163, 58, 0.11), transparent 280px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 96px),
+        #0b0b0b;
+      overflow: hidden;
+    }
+
+    .menu::before {
+      content: "FOODIE SPOT";
+      position: absolute;
+      top: 46px;
+      right: -18px;
+      color: rgba(255, 255, 255, 0.035);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(4.5rem, 12vw, 11rem);
+      font-weight: 700;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .menu-tools {
+      display: grid;
+      gap: 14px;
+      justify-items: end;
+      flex: 0 0 auto;
+    }
+
+    .filter-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+    }
+
+    .filter-button {
+      min-height: 40px;
+      padding: 9px 12px;
+      color: var(--color-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 800;
+      transition: color 180ms ease, background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .filter-button:hover,
+    .filter-button.is-active {
+      color: #111111;
+      background: var(--color-gold);
+      border-color: var(--color-gold);
+      transform: translateY(-1px);
+    }
+
+    .menu-search {
+      position: relative;
+      width: min(360px, 100%);
+    }
+
+    .menu-search input {
+      width: 100%;
+      min-height: 44px;
+      padding: 11px 14px 11px 42px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    .menu-search input:focus {
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 4px rgba(215, 163, 58, 0.14);
+    }
+
+    .menu-search::before {
+      content: "⌕";
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      color: var(--color-gold-light);
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-auto-flow: dense;
+      gap: 20px;
+      perspective: 1200px;
+    }
+
+    .menu-card {
+      --rx: 0deg;
+      --ry: 0deg;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.065), transparent 44%),
+        linear-gradient(180deg, #1b1b1b, #101010);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      transform-style: preserve-3d;
+      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease, background 240ms ease;
+    }
+
+    .menu-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(120deg, transparent 15%, rgba(244, 215, 131, 0.13), transparent 46%);
+      opacity: 0;
+      transform: translateX(-38%);
+      transition: opacity 240ms ease, transform 700ms ease;
+      pointer-events: none;
+    }
+
+    .menu-card:hover {
+      transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-7px);
+      border-color: var(--color-line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .menu-card:hover::before {
+      opacity: 1;
+      transform: translateX(38%);
+    }
+
+    .menu-card:nth-child(8n + 1) {
+      grid-column: span 2;
+    }
+
+    .menu-image {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(215, 163, 58, 0.2), rgba(47, 93, 75, 0.17)),
+        #151515;
+    }
+
+    .menu-card:nth-child(8n + 1) .menu-image {
+      aspect-ratio: 16 / 9;
+    }
+
+    .menu-card:nth-child(8n + 1) .menu-title {
+      font-size: clamp(1.25rem, 2vw, 1.55rem);
+    }
+
+    .menu-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      padding: 10px;
+      transition: transform 700ms ease, filter 260ms ease;
+      will-change: transform;
+    }
+
+    .menu-card:hover .menu-image img {
+      transform: scale(1.025);
+      filter: saturate(1.08) contrast(1.03);
+    }
+
+    .menu-image.is-portrait {
+      background:
+        linear-gradient(145deg, rgba(215, 163, 58, 0.2), rgba(102, 31, 40, 0.18)),
+        #121212;
+    }
+
+    .menu-image.is-portrait img {
+      object-fit: contain;
+      padding: 12px;
+      transform: scale(0.98);
+    }
+
+    .menu-card:hover .menu-image.is-portrait img {
+      transform: scale(1.02);
+    }
+
+    .menu-image.is-wide img {
+      padding: 8px;
+    }
+
+    .menu-number {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 30px;
+      padding: 0 9px;
+      color: #111111;
+      background: rgba(244, 215, 131, 0.94);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .menu-image.is-missing::after {
+      content: "Foodie Spot";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--color-gold-light);
+      font-weight: 900;
+    }
+
+    .menu-body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      position: relative;
+      z-index: 2;
+      padding: 19px;
+    }
+
+    .menu-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .menu-category {
+      color: var(--color-gold-light);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .menu-price {
+      color: #111111;
+      background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.85rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .menu-title {
+      margin: 0;
+      color: #ffffff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: 1.13rem;
+      line-height: 1.25;
+    }
+
+    .menu-desc {
+      margin: 10px 0 0;
+      color: var(--color-muted);
+      font-size: 0.94rem;
+    }
+
+    .menu-allergens {
+      margin: auto 0 0;
+      padding-top: 14px;
+      color: #a9a293;
+      font-size: 0.82rem;
+    }
+
+    .menu-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .menu-base-price {
+      color: var(--color-muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .menu-add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 9px 12px;
+      color: #111111;
+      background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+      border: 0;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: 0 12px 24px rgba(215, 163, 58, 0.18);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .menu-add:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(215, 163, 58, 0.28);
+    }
+
+    .empty-menu {
+      display: none;
+      margin-top: 24px;
+      padding: 18px;
+      color: var(--color-muted);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .empty-menu.is-visible {
+      display: block;
+    }
+
+    /* =========================
+       Košík a súhrn objednávky
+       ========================= */
+    .floating-cart {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 1100;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 12px 16px;
+      color: #111111;
+      background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+      border: 0;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 20px 46px rgba(0, 0, 0, 0.38), 0 14px 34px rgba(215, 163, 58, 0.22);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .floating-cart:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.46), 0 18px 42px rgba(215, 163, 58, 0.3);
+    }
+
+    .cart-badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 26px;
+      height: 26px;
+      padding: 0 8px;
+      color: var(--color-gold-light);
+      background: #111111;
+      border-radius: 999px;
+      font-size: 0.82rem;
+    }
+
+    .cart-total-pill {
+      padding-left: 10px;
+      border-left: 1px solid rgba(17, 17, 17, 0.22);
+    }
+
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1190;
+      background: rgba(0, 0, 0, 0.62);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .cart-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1200;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      width: min(520px, 100%);
+      color: var(--color-cream);
+      background:
+        linear-gradient(145deg, rgba(215, 163, 58, 0.1), transparent 34%),
+        #0b0b0b;
+      border-left: 1px solid var(--color-line);
+      box-shadow: -24px 0 70px rgba(0, 0, 0, 0.46);
+      transform: translateX(105%);
+      transition: transform 260ms ease;
+    }
+
+    .cart-drawer.is-open {
+      transform: translateX(0);
+    }
+
+    .cart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cart-head h2 {
+      margin: 0;
+      color: #ffffff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.55rem;
+      line-height: 1.1;
+    }
+
+    .cart-head span {
+      display: block;
+      margin-top: 4px;
+      color: var(--color-muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .cart-close {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--color-cream);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .cart-body {
+      overflow: auto;
+      padding: 20px 22px;
+    }
+
+    .cart-empty {
+      padding: 18px;
+      color: var(--color-muted);
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .cart-list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+    }
+
+    .cart-item img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      object-position: var(--focus, center);
+      border-radius: 6px;
+    }
+
+    .cart-item h3 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 0.98rem;
+      line-height: 1.25;
+    }
+
+    .cart-item small {
+      display: block;
+      margin-top: 3px;
+      color: var(--color-muted);
+      font-weight: 700;
+    }
+
+    .cart-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .cart-qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+    }
+
+    .cart-qty button,
+    .cart-remove {
+      display: grid;
+      place-items: center;
+      min-width: 30px;
+      height: 30px;
+      color: var(--color-cream);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .cart-remove {
+      color: var(--color-gold-light);
+      padding: 0 10px;
+      border-radius: var(--radius);
+    }
+
+    .cart-subtotal {
+      color: var(--color-gold-light);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .cart-form {
+      display: grid;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cart-form h3,
+    .cart-invoice h3 {
+      margin: 0;
+      color: var(--color-gold-light);
+      font-size: 1rem;
+    }
+
+    .cart-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cart-form .field-full {
+      grid-column: 1 / -1;
+    }
+
+    .cart-invoice {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .invoice-preview {
+      min-height: 170px;
+      color: #f5ead4;
+      background: rgba(0, 0, 0, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      white-space: pre-wrap;
+    }
+
+    .cart-foot {
+      display: grid;
+      gap: 14px;
+      padding: 18px 22px 22px;
+      background: rgba(0, 0, 0, 0.38);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cart-total-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .cart-total-line strong {
+      color: var(--color-gold-light);
+      font-size: 1.35rem;
+    }
+
+    .cart-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .cart-clear {
+      min-height: 48px;
+      padding: 12px 14px;
+      color: var(--color-cream);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .cart-status {
+      min-height: 22px;
+      margin: 0;
+      color: var(--color-gold-light);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    /* =========================
+       Rezervácia a objednávka
+       ========================= */
+    .reservation {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(100deg, rgba(7, 7, 7, 0.96), rgba(7, 7, 7, 0.74)),
+        url("MENU FOODIE SPOT/7.Padthai.png") 58% 50% / cover no-repeat;
+    }
+
+    .reservation::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(215, 163, 58, 0.12) 1px, transparent 1px) 0 0 / 92px 92px,
+        linear-gradient(180deg, transparent, rgba(7, 7, 7, 0.72));
+      pointer-events: none;
+    }
+
+    .reservation-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(320px, 1.12fr);
+      gap: 42px;
+      align-items: start;
+    }
+
+    .reservation-copy {
+      position: sticky;
+      top: calc(var(--header-height) + 28px);
+    }
+
+    .contact-strip {
+      display: grid;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .contact-strip a,
+    .contact-strip span {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--color-cream);
+      font-weight: 800;
+    }
+
+    .contact-strip small {
+      color: var(--color-muted);
+      font-weight: 700;
+    }
+
+    .order-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      background: rgba(12, 12, 12, 0.9);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .order-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-gold-light), transparent);
+      transform: translateX(-100%);
+      animation: lineSweep 5.4s ease-in-out infinite;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: #ffffff;
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 12px 13px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    textarea {
+      min-height: 116px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 4px rgba(215, 163, 58, 0.14);
+    }
+
+    .field:focus-within label {
+      color: var(--color-gold-light);
+    }
+
+    .choice-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .choice {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 12px;
+      color: var(--color-muted);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 900;
+      text-align: center;
+      transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .choice input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice:has(input:checked) {
+      color: #111111;
+      background: var(--color-gold);
+      border-color: var(--color-gold);
+    }
+
+    .form-note {
+      margin: 12px 0 0;
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-status {
+      min-height: 24px;
+      margin: 14px 0 0;
+      color: var(--color-gold-light);
+      font-weight: 800;
+    }
+
+    .submit-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    /* =========================
+       Kontakt a mapa
+       ========================= */
+    .contact {
+      background: #090909;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.86fr) minmax(0, 1.14fr);
+      gap: 28px;
+      margin-top: 34px;
+    }
+
+    .contact-stack {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .contact-card,
+    .hours-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.055), transparent 42%),
+        var(--color-panel);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+    }
+
+    .contact-card:hover,
+    .hours-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-card::before,
+    .hours-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(244, 215, 131, 0.9), transparent);
+    }
+
+    .contact-card h3,
+    .hours-card h3 {
+      margin: 0 0 16px;
+      color: var(--color-gold-light);
+      font-size: 1.2rem;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .contact-list li {
+      color: var(--color-muted);
+    }
+
+    .contact-list strong {
+      display: block;
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+
+    .hours-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hours-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 8px;
+      color: var(--color-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hours-list li:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .hours-list strong {
+      color: #ffffff;
+    }
+
+    .map-wrap {
+      min-height: 100%;
+      overflow: hidden;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      transition: transform 260ms ease, border-color 260ms ease;
+    }
+
+    .map-wrap:hover {
+      transform: translateY(-4px);
+      border-color: rgba(244, 215, 131, 0.6);
+    }
+
+    .map-wrap iframe {
+      display: block;
+      width: 100%;
+      min-height: 520px;
+      border: 0;
+      filter: saturate(0.9) contrast(1.05);
+    }
+
+    /* =========================
+       Footer
+       ========================= */
+    .site-footer {
+      padding: 32px 0;
+      background: #050505;
+      border-top: 1px solid var(--color-line);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand strong {
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+
+    .footer-brand span {
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-credit {
+      color: var(--color-gold-light);
+      font-weight: 900;
+      text-align: left;
+      letter-spacing: 0.02em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .footer-links a {
+      color: var(--color-muted);
+      font-weight: 800;
+      transition: color 180ms ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-gold-light);
+    }
+
+    /* =========================
+       Jemné animácie
+       ========================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px) scale(0.985);
+      transition: opacity 720ms ease, transform 720ms ease;
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .menu-card.reveal.is-visible:hover {
+      transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-7px);
+    }
+
+    @keyframes heroZoom {
+      from {
+        transform: scale(1.05) translate3d(0, 0, 0);
+      }
+
+      to {
+        transform: scale(1.13) translate3d(-1.5%, -1.2%, 0);
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes lineSweep {
+      0%,
+      30% {
+        transform: translateX(-100%);
+      }
+
+      68%,
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes floatCue {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* =========================
+       Responsive úpravy
+       ========================= */
+    @media (max-width: 980px) {
+      .section-head,
+      .about-grid,
+      .hero-shell,
+      .reservation-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-visual {
+        min-height: 0;
+      }
+
+      .section-head {
+        align-items: start;
+      }
+
+      .menu-tools {
+        width: 100%;
+        justify-items: stretch;
+      }
+
+      .filter-list {
+        justify-content: flex-start;
+      }
+
+      .menu-search {
+        width: 100%;
+      }
+
+      .reservation-copy {
+        position: static;
+      }
+
+      .about-gallery {
+        min-height: 480px;
+      }
+
+      .menu-card:nth-child(8n + 1) {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-toggle {
+        display: grid;
+        place-items: center;
+      }
+
+      .main-nav {
+        position: absolute;
+        top: var(--header-height);
+        right: 0;
+        left: 0;
+        display: grid;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 20px;
+        background: rgba(7, 7, 7, 0.98);
+        border-bottom: 1px solid transparent;
+        transition: max-height 220ms ease, padding 220ms ease, border-color 220ms ease;
+      }
+
+      .main-nav.is-open {
+        max-height: 360px;
+        padding: 14px 20px 18px;
+        border-color: var(--color-line);
+      }
+
+      .main-nav a {
+        padding: 12px;
+      }
+
+      .call-button span:last-child {
+        display: none;
+      }
+
+      .hero-facts {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-dish-card {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --header-height: 70px;
+      }
+
+      .container {
+        width: min(100% - 28px, var(--container));
+      }
+
+      .section {
+        padding: 68px 0;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-location {
+        display: none;
+      }
+
+      .header-inner {
+        position: relative;
+        gap: 12px;
+      }
+
+      .brand {
+        flex: 1 1 auto;
+        max-width: calc(100% - 112px);
+      }
+
+      .brand-name {
+        font-size: 1rem;
+      }
+
+      .header-actions {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 92px;
+        flex: 0 0 auto;
+        gap: 8px;
+        justify-content: flex-end;
+        transform: translateY(-50%);
+      }
+
+      .call-button {
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        padding: 0;
+      }
+
+      .nav-toggle {
+        flex: 0 0 42px;
+      }
+
+      .hero {
+        min-height: 84vh;
+        padding-top: calc(var(--header-height) + 44px);
+      }
+
+      .hero::before {
+        background-position: 62% center;
+      }
+
+      .hero-scrollcue {
+        display: none;
+      }
+
+      .hero-content::before {
+        left: 0;
+      }
+
+      .hero-eyebrow {
+        display: none;
+      }
+
+      .hero-visual {
+        display: grid;
+        gap: 14px;
+        min-height: 0;
+      }
+
+      .hero-dish-card {
+        position: relative;
+        inset: auto;
+      }
+
+      .hero-dish-card img {
+        height: 260px;
+      }
+
+      .hero-dish-bottom {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .hero-mini-card {
+        position: relative;
+        max-width: none;
+      }
+
+      .hero-mini-card.top {
+        top: auto;
+        left: auto;
+      }
+
+      .hero-mini-card.bottom {
+        right: auto;
+        bottom: auto;
+        margin-top: 0;
+      }
+
+      .hero-actions,
+      .submit-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .hero-actions .btn,
+      .submit-row .btn {
+        width: 100%;
+      }
+
+      .about-stats,
+      .about-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .about-gallery {
+        grid-template-rows: auto;
+        min-height: 0;
+      }
+
+      .about-media.main {
+        grid-row: auto;
+      }
+
+      .about-media,
+      .about-media img {
+        min-height: 280px;
+      }
+
+      .form-grid,
+      .choice-row,
+      .cart-form-grid,
+      .cart-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-drawer {
+        width: 100%;
+      }
+
+      .cart-body {
+        padding: 16px;
+      }
+
+      .cart-head,
+      .cart-foot {
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .cart-item {
+        grid-template-columns: 54px minmax(0, 1fr);
+      }
+
+      .cart-item img {
+        width: 54px;
+        height: 54px;
+      }
+
+      .floating-cart {
+        right: 14px;
+        bottom: 14px;
+        min-height: 48px;
+        padding: 10px 12px;
+      }
+
+      .cart-total-pill {
+        display: none;
+      }
+
+      .order-card,
+      .contact-card,
+      .hours-card {
+        padding: 18px;
+      }
+
+      .map-wrap iframe {
+        min-height: 360px;
+      }
+
+      .footer-inner {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .footer-brand {
+        justify-content: center;
+      }
+
+      .footer-credit {
+        text-align: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+        margin-left: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Header / navigácia -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="Foodie Spot domov">
+        <span class="brand-mark">FS</span>
+        <span class="brand-text">
+          <span class="brand-name">Foodie Spot</span>
+          <span class="brand-location">Panónska cesta 38/A</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Hlavná navigácia">
+        <a href="#home">Úvod</a>
+        <a href="#about">O nás</a>
+        <a href="#menu">Menu</a>
+        <a href="#reservation">Rezervácia</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-primary call-button" href="tel:+421948669999" aria-label="Zavolať do Foodie Spot">
+          <span class="icon" aria-hidden="true">☎</span>
+          <span>Zavolať</span>
+        </a>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Otvoriť menu" aria-controls="mainNav" aria-expanded="false">
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Košík / súhrn objednávky -->
+  <div class="cart-overlay" id="cartOverlay" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Košík Foodie Spot">
+    <div class="cart-head">
+      <div>
+        <h2>Košík</h2>
+        <span>Vybrané jedlá a predbežná faktúra</span>
+      </div>
+      <button class="cart-close" type="button" id="cartClose" aria-label="Zavrieť košík">×</button>
+    </div>
+
+    <div class="cart-body">
+      <div class="cart-list" id="cartItems"></div>
+      <p class="cart-empty" id="cartEmpty">Košík je prázdny. Vyberte jedlá v sekcii menu.</p>
+
+      <form class="cart-form" id="cartForm">
+        <h3>Údaje k objednávke</h3>
+        <div class="cart-form-grid">
+          <div class="field">
+            <label for="cartName">Meno</label>
+            <input id="cartName" name="cartName" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="cartPhone">Telefón</label>
+            <input id="cartPhone" name="cartPhone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="field field-full">
+            <label for="cartEmail">E-mail</label>
+            <input id="cartEmail" name="cartEmail" type="email" autocomplete="email">
+          </div>
+          <div class="field field-full">
+            <label for="cartNote">Poznámka</label>
+            <textarea id="cartNote" name="cartNote" placeholder="Čas vyzdvihnutia, alergie alebo ďalšie informácie."></textarea>
+          </div>
+        </div>
+      </form>
+
+      <div class="cart-invoice">
+        <h3>Faktúra / súhrn objednávky</h3>
+        <textarea class="invoice-preview" id="invoicePreview" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="cart-foot">
+      <div class="cart-total-line">
+        <span>Spolu</span>
+        <strong id="cartTotal">0,00 €</strong>
+      </div>
+      <div class="cart-actions">
+        <button class="btn btn-primary" type="button" id="sendCartOrder">Odoslať na Gmail</button>
+        <button class="cart-clear" type="button" id="clearCart">Vymazať</button>
+      </div>
+      <p class="cart-status" id="cartStatus" role="status"></p>
+    </div>
+  </aside>
+
+  <button class="floating-cart" type="button" data-cart-open aria-label="Otvoriť košík">
+    <span>Košík</span>
+    <span class="cart-badge" id="cartCount">0</span>
+    <span class="cart-total-pill" id="cartFloatingTotal">0,00 €</span>
+  </button>
+
+  <main>
+    <!-- Hero sekcia -->
+    <section class="hero" id="home">
+      <div class="container hero-shell">
+        <div class="hero-content">
+          <span class="hero-badge">Ázijská kuchyňa · sushi · nápoje</span>
+          <span class="hero-eyebrow">Foodie Spot Petržalka</span>
+          <h1>Elegantné ázijské jedlá pripravené pre dnešnú chuť.</h1>
+          <p>Objednajte si čerstvé rezance, poke, sushi sety, polievky a nápoje z jedného miesta. Vyberte jedlá do košíka, pozrite celkovú cenu a odošlite objednávku priamo na Foodie Spot.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#menu">Vybrať z menu</a>
+            <button class="btn btn-outline" type="button" data-cart-open>Otvoriť košík</button>
+            <a class="btn btn-outline" href="#reservation" data-request="Rezervácia stola">Rezervovať stôl</a>
+          </div>
+
+          <div class="hero-facts" aria-label="Rýchle informácie">
+            <div class="hero-fact">
+              <strong>9:00 - 20:00</strong>
+              <span>Pondelok až sobota</span>
+            </div>
+            <div class="hero-fact">
+              <strong>Panónska cesta 38/A</strong>
+              <span>851 04 Petržalka</span>
+            </div>
+            <div class="hero-fact">
+              <strong>Objednávka cez e-mail</strong>
+              <span>Kimtienlvcp92@gmail.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Odporúčanie Foodie Spot">
+          <div class="hero-mini-card top">
+            <strong>Dnes otvorené</strong>
+            <span>Čerstvé jedlá od 9:00 do 20:00</span>
+          </div>
+
+          <div class="hero-dish-card">
+            <img src="MENU FOODIE SPOT/87.SET 1.jpg" alt="Sushi set Foodie Spot">
+            <div class="hero-dish-info">
+              <span class="hero-dish-kicker">Chef selection</span>
+              <h2>Sushi sety, rezance a vietnamské špeciality.</h2>
+              <p>Vyberte položky z menu, nastavte počet kusov a stránka pripraví súhrn objednávky s celkovou cenou.</p>
+              <div class="hero-dish-bottom">
+                <span class="hero-dish-price">od 4,50 €</span>
+                <a class="btn btn-outline" href="#menu">Pozrieť menu</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scrollcue" aria-hidden="true">Scroll</div>
+    </section>
+
+    <!-- Prémiový pohyblivý pás -->
+    <section class="luxury-strip" aria-label="Foodie Spot špeciality">
+      <div class="luxury-track">
+        <span>Čerstvé ázijské jedlá</span>
+        <span>Sushi sety</span>
+        <span>Voňavé polievky</span>
+        <span>Poke misky</span>
+        <span>Prémiové nápoje</span>
+        <span>Petržalka</span>
+        <span>Čerstvé ázijské jedlá</span>
+        <span>Sushi sety</span>
+        <span>Voňavé polievky</span>
+        <span>Poke misky</span>
+        <span>Prémiové nápoje</span>
+        <span>Petržalka</span>
+      </div>
+    </section>
+
+    <!-- O nás -->
+    <section class="section about" id="about">
+      <div class="container about-grid">
+        <div class="about-text reveal">
+          <span class="section-kicker">O Foodie Spot</span>
+          <h2 class="section-title">Čerstvé jedlá, výrazné chute a príjemný servis.</h2>
+          <p class="section-copy">Foodie Spot spája rýchlu dostupnosť obľúbeného bistra s chuťou kvalitnej ázijskej kuchyne. Pripravujeme teplé jedlá, rezance, ryžu, sushi, polievky a nápoje pre obed, večeru aj objednávku so sebou.</p>
+
+          <ul class="about-list">
+            <li>Menu s reálnymi jedlami a cenami podľa pokladničného cenníka Foodie Spot.</li>
+            <li>Výber pre milovníkov mäsa, kreviet, lososa, tofu aj ľahších poke jedál.</li>
+            <li>Jednoduchá rezervácia alebo objednávka cez e-mail s vyplnenými údajmi.</li>
+          </ul>
+
+          <div class="about-stats">
+            <div class="about-stat">
+              <strong>80+</strong>
+              <span>Položiek v menu</span>
+            </div>
+            <div class="about-stat">
+              <strong>6</strong>
+              <span>Dní otvorené</span>
+            </div>
+            <div class="about-stat">
+              <strong>2</strong>
+              <span>Rýchle kontakty</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-gallery reveal">
+          <div class="about-media main focus-sushi">
+            <img src="MENU FOODIE SPOT/87.SET 1.jpg" alt="Sushi set Foodie Spot" loading="lazy">
+            <div class="about-label">
+              <strong>Sushi & Ázia</strong>
+              <span>Čerstvo pripravené kombinácie pre rýchly obed aj spoločné posedenie.</span>
+            </div>
+          </div>
+          <div class="about-media secondary focus-noodles">
+            <img src="MENU FOODIE SPOT/7.Padthai.png" alt="Padthai Foodie Spot" loading="lazy">
+          </div>
+          <div class="about-media secondary focus-drink">
+            <img src="MENU FOODIE SPOT/VINUT Mango-290ml.jpg" alt="Ovocný nápoj Foodie Spot" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section class="section menu" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <div class="reveal">
+            <span class="section-kicker">Menu</span>
+            <h2 class="section-title">Obľúbené jedlá Foodie Spot</h2>
+            <p class="section-copy">Vyberte si z hlavných jedál, sushi, polievok, príloh a nápojov. Ceny sú pripravené podľa dostupného cenníka.</p>
+          </div>
+
+          <div class="menu-tools reveal" aria-label="Filtrovanie menu">
+            <div class="filter-list">
+              <button class="filter-button is-active" type="button" data-filter="all">Všetko</button>
+              <button class="filter-button" type="button" data-filter="main">Hlavné jedlá</button>
+              <button class="filter-button" type="button" data-filter="sushi">Sushi</button>
+              <button class="filter-button" type="button" data-filter="soup">Polievky & prílohy</button>
+              <button class="filter-button" type="button" data-filter="drinks">Nápoje</button>
+            </div>
+
+            <label class="menu-search">
+              <span class="sr-only">Hľadať v menu</span>
+              <input id="menuSearch" type="search" placeholder="Hľadať v menu..." autocomplete="off">
+            </label>
+          </div>
+        </div>
+
+        <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
+        <p class="empty-menu" id="emptyMenu">Nenašli sa žiadne položky. Skúste iný názov alebo kategóriu.</p>
+      </div>
+    </section>
+
+    <!-- Formulár rezervácie / objednávky -->
+    <section class="section reservation" id="reservation">
+      <div class="container reservation-grid">
+        <div class="reservation-copy reveal">
+          <span class="section-kicker">Objednávka a rezervácia</span>
+          <h2 class="section-title">Pošlite nám údaje jedným kliknutím.</h2>
+          <p class="section-copy">Vyplňte formulár a stránka otvorí e-mailového klienta s pripravenou správou pre Foodie Spot. Rezerváciu alebo objednávku potvrdíme podľa dostupnosti.</p>
+
+          <div class="contact-strip">
+            <a href="tel:+421948669999"><span class="icon" aria-hidden="true">☎</span><span>+421 948 669 999 <small>/ +421 949 878 831</small></span></a>
+            <a href="mailto:Kimtienlvcp92@gmail.com"><span class="icon" aria-hidden="true">✉</span><span>Kimtienlvcp92@gmail.com</span></a>
+            <span><span class="icon" aria-hidden="true">⌖</span><span>Panónska cesta 38/A, 851 04 Petržalka</span></span>
+          </div>
+        </div>
+
+        <form class="order-card reveal" id="bookingForm">
+          <div class="form-grid">
+            <div class="field field-full">
+              <label>Typ požiadavky</label>
+              <div class="choice-row">
+                <label class="choice">
+                  <input type="radio" name="requestType" value="Rezervácia stola" checked>
+                  Rezervácia stola
+                </label>
+                <label class="choice">
+                  <input type="radio" name="requestType" value="Objednávka jedla">
+                  Objednávka jedla
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="customerName">Meno a priezvisko</label>
+              <input id="customerName" name="customerName" type="text" autocomplete="name" required>
+            </div>
+
+            <div class="field">
+              <label for="phone">Telefón</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+            </div>
+
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+
+            <div class="field">
+              <label for="datetime">Dátum a čas</label>
+              <input id="datetime" name="datetime" type="datetime-local" required>
+            </div>
+
+            <div class="field">
+              <label for="guests">Počet osôb</label>
+              <input id="guests" name="guests" type="number" min="1" max="60" value="2" required>
+            </div>
+
+            <div class="field field-full">
+              <label for="note">Poznámka</label>
+              <textarea id="note" name="note" placeholder="Napíšte jedlá, čas príchodu, alergie alebo ďalšie informácie."></textarea>
+            </div>
+          </div>
+
+          <p class="form-note">Odoslanie otvorí správu v e-mailovej aplikácii. Príjemca: <strong>Kimtienlvcp92@gmail.com</strong></p>
+          <div class="submit-row">
+            <button class="btn btn-primary" type="submit">Odoslať cez e-mail</button>
+            <a class="btn btn-outline" href="tel:+421949878831">Zavolať druhé číslo</a>
+          </div>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Kontakt a Google mapa -->
+    <section class="section contact" id="contact">
+      <div class="container">
+        <span class="section-kicker reveal">Kontakt</span>
+        <h2 class="section-title reveal">Nájdete nás v Petržalke.</h2>
+        <p class="section-copy reveal">Zastavte sa osobne, zavolajte nám alebo pošlite e-mail s objednávkou či rezerváciou.</p>
+
+        <div class="contact-grid">
+          <div class="contact-stack">
+            <div class="contact-card reveal">
+              <h3>Kontaktné údaje</h3>
+              <ul class="contact-list">
+                <li>
+                  <strong>Adresa</strong>
+                  Panónska cesta 38/A, 851 04 Petržalka
+                </li>
+                <li>
+                  <strong>Telefón</strong>
+                  <a href="tel:+421948669999">+421 948 669 999</a> / <a href="tel:+421949878831">+421 949 878 831</a>
+                </li>
+                <li>
+                  <strong>E-mail</strong>
+                  <a href="mailto:Kimtienlvcp92@gmail.com">Kimtienlvcp92@gmail.com</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="hours-card reveal">
+              <h3>Otváracie hodiny</h3>
+              <ul class="hours-list">
+                <li><strong>Pondelok</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Utorok</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Streda</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Štvrtok</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Piatok</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Sobota</strong><span>9:00 - 20:00</span></li>
+                <li><strong>Nedeľa</strong><span>Zatvorené</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="map-wrap reveal">
+            <iframe
+              title="Mapa Foodie Spot, Panónska cesta 38/A, Petržalka"
+              src="https://www.google.com/maps?q=Pan%C3%B3nska%20cesta%2038%2FA%2C%20851%2004%20Petr%C5%BEalka&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>Foodie Spot</strong>
+        <span>© 2026 Vse pravice pridržane</span>
+      </div>
+      <div class="footer-credit">Oblikoval Hoangcaster</div>
+      <nav class="footer-links" aria-label="Rýchle odkazy">
+        <a href="#home">Úvod</a>
+        <a href="#about">O nás</a>
+        <a href="#menu">Menu</a>
+        <a href="#reservation">Rezervácia</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================
+       Dáta menu podľa Menu pokladňa.docx
+       ========================= */
+    const MENU_ITEMS = [
+      {
+        category: "main",
+        title: "Tofu v paradajkovej",
+        desc: "Jemné tofu v paradajkovej omáčke, vhodné k ryži alebo rezancom.",
+        price: "6,00 €",
+        allergens: "6",
+        image: "MENU FOODIE SPOT/1.Tofu v paradajkovej.jpg"
+      },
+      {
+        category: "main",
+        title: "Krevety so zeleninou",
+        desc: "Krevety so sviežou zeleninou a výraznou ázijskou omáčkou.",
+        price: "6,50 €",
+        allergens: "2, 6",
+        image: "MENU FOODIE SPOT/2.Krevety so zeleninou.jpg"
+      },
+      {
+        category: "main",
+        title: "Šalát krevety",
+        desc: "Ľahký šalát s krevetami pre svieži obed alebo večeru.",
+        price: "7,90 €",
+        allergens: "6",
+        image: "MENU FOODIE SPOT/3.Šalád krevety.jpg"
+      },
+      {
+        category: "main",
+        title: "Hovädzie so zeleninou",
+        desc: "Hovädzie mäso pripravené so zeleninou na ázijský spôsob.",
+        price: "6,50 €",
+        allergens: "6",
+        image: "MENU FOODIE SPOT/4.Hovädzie so zeleninou.png"
+      },
+      {
+        category: "main",
+        title: "Poke krevety",
+        desc: "Farebná poke miska s krevetami, zeleninou a sezamom.",
+        price: "11,50 €",
+        allergens: "2, 4, 6, 11",
+        image: "MENU FOODIE SPOT/5.Poke krevety.jpg"
+      },
+      {
+        category: "main",
+        title: "Poke kuracie",
+        desc: "Kuracia poke miska s čerstvými surovinami a jemnou omáčkou.",
+        price: "10,50 €",
+        allergens: "4, 6, 11",
+        image: "MENU FOODIE SPOT/6.Poke kuracie.png"
+      },
+      {
+        category: "main",
+        title: "Padthai",
+        desc: "Obľúbené ryžové rezance so sladko-kyslou chuťou a arašidmi.",
+        price: "8,50 €",
+        allergens: "3, 4, 5",
+        image: "MENU FOODIE SPOT/7.Padthai.png"
+      },
+      {
+        category: "main",
+        title: "Opekané rezance",
+        desc: "Výber s kuracím, hovädzím, tofu alebo krevetami.",
+        price: "od 8,00 €",
+        allergens: "1, 3, 6; krevety aj 2",
+        image: "MENU FOODIE SPOT/8.Opekné rezance kuracie.png"
+      },
+      {
+        category: "main",
+        title: "Opekané ryžové rezance",
+        desc: "Ryžové rezance s kuracím, hovädzím, tofu alebo krevetami.",
+        price: "od 8,50 €",
+        allergens: "3, 6; krevety aj 2",
+        image: "MENU FOODIE SPOT/9.Opekné ryžové rezance krevety.png"
+      },
+      {
+        category: "main",
+        title: "Sklenené rezance",
+        desc: "Sklenené rezance s kuracím, hovädzím, tofu alebo krevetami.",
+        price: "od 9,00 €",
+        allergens: "6; krevety aj 2",
+        image: "MENU FOODIE SPOT/10.Sklenené hovädzie.jpg"
+      },
+      {
+        category: "main",
+        title: "Rizoto",
+        desc: "Ryžové rizoto s kuracím, hovädzím, tofu alebo krevetami.",
+        price: "od 8,00 €",
+        allergens: "3, 6; krevety aj 2",
+        image: "MENU FOODIE SPOT/11.Rizoto kuracie.jpg"
+      },
+      {
+        category: "main",
+        title: "Vifon ryžové rezance",
+        desc: "Ryžové rezance Vifon s výberom mäsa, tofu alebo kreviet.",
+        price: "od 9,00 €",
+        allergens: "6; krevety aj 2",
+        image: "MENU FOODIE SPOT/12.Vifon ryžové rezance kuracie.png"
+      },
+      {
+        category: "main",
+        title: "Bún trộn",
+        desc: "Vietnamská miska s rezancami, zeleninou a sviežou omáčkou.",
+        price: "od 9,00 €",
+        allergens: "4, 5, 6",
+        image: "MENU FOODIE SPOT/13.Bun tron.png"
+      },
+      {
+        category: "main",
+        title: "Phở polievka",
+        desc: "Voňavá vietnamská polievka s kuracím alebo hovädzím mäsom.",
+        price: "od 7,00 €",
+        allergens: "4, 14",
+        image: "MENU FOODIE SPOT/14.Phở Polievka.jpg"
+      },
+      {
+        category: "main",
+        title: "Bún bò Nam Bộ",
+        desc: "Obľúbené vietnamské rezance s kuracím alebo hovädzím mäsom.",
+        price: "od 8,50 €",
+        allergens: "1, 4, 5, 6",
+        image: "MENU FOODIE SPOT/13.Bun tron.png"
+      },
+      {
+        category: "main",
+        title: "Bún hải sản",
+        desc: "Rezancová miska s morskými plodmi a sviežimi bylinkami.",
+        price: "11,00 €",
+        allergens: "2, 4, 14",
+        image: "MENU FOODIE SPOT/16.Bún hải sản.png"
+      },
+      {
+        category: "main",
+        title: "Bún cá",
+        desc: "Vietnamská špecialita s rybou, rezancami a zeleninou.",
+        price: "10,00 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/17.Bún cá.png"
+      },
+      {
+        category: "main",
+        title: "Chrumkavé kura",
+        desc: "Chrumkavé kuracie mäso, obľúbené k ryži alebo hranolkám.",
+        price: "6,50 €",
+        allergens: "1, 3, 7",
+        image: "MENU FOODIE SPOT/19.Chrumkavé kura.png"
+      },
+      {
+        category: "main",
+        title: "Chrumkavá kačica",
+        desc: "Chrumkavá kačica s výraznou chuťou a zlatou kôrkou.",
+        price: "7,50 €",
+        allergens: "1, 3",
+        image: "MENU FOODIE SPOT/20.Chrumkavé kačica.jpg"
+      },
+      {
+        category: "main",
+        title: "Bravčové v tempure",
+        desc: "Bravčové kúsky v jemnej tempure.",
+        price: "6,00 €",
+        allergens: "1, 3",
+        image: "MENU FOODIE SPOT/21.Bravčové v tempura.png"
+      },
+      {
+        category: "main",
+        title: "Vyprážané krevety",
+        desc: "Krevety v chrumkavom obale, vhodné ako hlavné jedlo aj snack.",
+        price: "6,00 €",
+        allergens: "1, 2, 3",
+        image: "MENU FOODIE SPOT/22.Výpražané krevety.jpg"
+      },
+      {
+        category: "main",
+        title: "Bún chả",
+        desc: "Vietnamská klasika s mäsom, rezancami, bylinkami a omáčkou.",
+        price: "9,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/23.BÚN CHẢ.jpg"
+      },
+      {
+        category: "main",
+        title: "Vyprážané jarné závitky",
+        desc: "Chrumkavé jarné závitky s omáčkou.",
+        price: "6,00 €",
+        allergens: "1, 3, 4",
+        image: "MENU FOODIE SPOT/24.Výpražané jarné závitky.jpg"
+      },
+      {
+        category: "main",
+        title: "Jarné rolky s krevetami",
+        desc: "Svieže rolky s krevetami a jemnou vietnamskou chuťou.",
+        price: "7,50 €",
+        allergens: "2, 4",
+        image: "MENU FOODIE SPOT/25.Jarné rolky s krevetami.png"
+      },
+      {
+        category: "main",
+        title: "Syr s hranolkami",
+        desc: "Vyprážaný syr s hranolkami pre klasickú chuť.",
+        price: "8,00 €",
+        allergens: "1, 3, 7",
+        image: "MENU FOODIE SPOT/26.Syr s hranolkami.png"
+      },
+      {
+        category: "main",
+        title: "Krevety v tempure",
+        desc: "Krevety v tempurovom cestíčku s chrumkavou štruktúrou.",
+        price: "7,00 €",
+        allergens: "1, 2, 3",
+        image: "MENU FOODIE SPOT/27.Krevety v tempure.png"
+      },
+      {
+        category: "main",
+        title: "Medové kura",
+        desc: "Kuracie kúsky s jemne sladkou medovou omáčkou.",
+        price: "6,00 €",
+        allergens: "1, 6, 11",
+        image: "MENU FOODIE SPOT/28.Medové kura.png"
+      },
+      {
+        category: "main",
+        title: "Kuracie nugetky s hranolkami",
+        desc: "Jednoduchá obľúbená kombinácia s hranolkami.",
+        price: "8,00 €",
+        allergens: "1, 3, 5, 6, 9",
+        image: "MENU FOODIE SPOT/29.Kuracie nugetky s hranolkami.jpg"
+      },
+      {
+        category: "main",
+        title: "Bún nem",
+        desc: "Ryžové rezance s jarnými závitkami a vietnamskou omáčkou.",
+        price: "8,50 €",
+        allergens: "3, 4, 6",
+        image: "MENU FOODIE SPOT/30. Bun nem.png"
+      },
+      {
+        category: "main",
+        title: "Mango soté",
+        desc: "Soté s mangovou omáčkou, dostupné s kuracím, tofu alebo hovädzím.",
+        price: "od 6,00 €",
+        allergens: "6",
+        image: "MENU FOODIE SPOT/31.Mango sote - kuracie.jpg"
+      },
+      {
+        category: "main",
+        title: "Kuracie kung-pao",
+        desc: "Kuracie mäso s arašidmi a zeleninou v intenzívnej omáčke.",
+        price: "6,00 €",
+        allergens: "5, 6",
+        image: "MENU FOODIE SPOT/32.Kuracie kung – pao.png"
+      },
+      {
+        category: "main",
+        title: "Grilovaný losos s curry",
+        desc: "Losos s curry omáčkou pre výraznú a jemnú chuť.",
+        price: "9,00 €",
+        allergens: "4, 7",
+        image: "MENU FOODIE SPOT/33.Grilovaný losos s curry.jpg"
+      },
+      {
+        category: "main",
+        title: "Krevety na karí",
+        desc: "Krevety v krémovej kari omáčke.",
+        price: "6,90 €",
+        allergens: "2, 7",
+        image: "MENU FOODIE SPOT/34.Krevety na karí.png"
+      },
+      {
+        category: "main",
+        title: "Hovädzie s fazuľou",
+        desc: "Hovädzie mäso s fazuľou a ázijskou omáčkou.",
+        price: "6,50 €",
+        allergens: "6",
+        image: "MENU FOODIE SPOT/35.Hovädzie s fazulou.jpg"
+      },
+      {
+        category: "main",
+        title: "Hovädzie na Thai curry",
+        desc: "Hovädzie mäso v aromatickej thajskej kari omáčke.",
+        price: "6,90 €",
+        allergens: "4, 7",
+        image: "MENU FOODIE SPOT/36.HOVÄDZIE na Thai curry.png"
+      },
+      {
+        category: "main",
+        title: "Pečené hovädzie so zeleninou",
+        desc: "Pečené hovädzie mäso so zeleninou a teplou prílohou.",
+        price: "7,00 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/37.Pečené hovädzie s koňovou zeleninou.jpg"
+      },
+      {
+        category: "main",
+        title: "Cơm trộn",
+        desc: "Miska s ryžou, zeleninou a výberom kuracieho, hovädzieho alebo kreviet.",
+        price: "od 8,00 €",
+        allergens: "3, 6; krevety aj 2",
+        image: "MENU FOODIE SPOT/38.Cơm Trộn.jpg"
+      },
+      {
+        category: "main",
+        title: "Kuracie s arašidovou omáčkou",
+        desc: "Grilované kuracie mäso s arašidovou omáčkou.",
+        price: "6,50 €",
+        allergens: "5, 6",
+        image: "MENU FOODIE SPOT/39. Kuracie Grilované s arašidovou omáčkou.jpg"
+      },
+      {
+        category: "main",
+        title: "Opekané udon rezance",
+        desc: "Hrubé udon rezance s kuracím, hovädzím, tofu alebo krevetami.",
+        price: "od 8,50 €",
+        allergens: "1, 6; krevety aj 2",
+        image: "MENU FOODIE SPOT/40.Opekné udon rezance hovädzie.jpg"
+      },
+      {
+        category: "main",
+        title: "Poke udon",
+        desc: "Udon poke s kuracím, hovädzím, krevetami alebo lososom.",
+        price: "od 10,90 €",
+        allergens: "1, 4, 6, 11",
+        image: "MENU FOODIE SPOT/41.Poke udon.png"
+      },
+      {
+        category: "main",
+        title: "Poke ryža",
+        desc: "Ryžová poke miska s kuracím, hovädzím, krevetami alebo lososom.",
+        price: "od 10,90 €",
+        allergens: "4, 6, 11",
+        image: "MENU FOODIE SPOT/42.Poke ryžov.png"
+      },
+      {
+        category: "soup",
+        title: "Tom yum polievka",
+        desc: "Pikantná a kyslastá polievka s typickou ázijskou arómou.",
+        price: "6,00 €",
+        allergens: "1, 2, 4, 6",
+        image: "MENU FOODIE SPOT/18.Tomyum polievka.jpg"
+      },
+      {
+        category: "soup",
+        title: "Ostrokyslá polievka",
+        desc: "Klasická ostrokyslá polievka na zahriatie.",
+        price: "2,20 €",
+        allergens: "3, 6",
+        image: "MENU FOODIE SPOT/48.Ostrokyslá polievka.png"
+      },
+      {
+        category: "soup",
+        title: "Vietnamská polievka",
+        desc: "Ľahká vietnamská polievka pre rýchly štart jedla.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/49.Vietnamské polievka.png"
+      },
+      {
+        category: "soup",
+        title: "Jazmínová ryža",
+        desc: "Voňavá príloha k mäsu, tofu alebo kari omáčkam.",
+        price: "2,00 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/43.Jasminová ryza.jpg"
+      },
+      {
+        category: "soup",
+        title: "Opekané rezance",
+        desc: "Teplá rezancová príloha k hlavnému jedlu.",
+        price: "2,80 €",
+        allergens: "1, 3, 6",
+        image: "MENU FOODIE SPOT/44.Opekné rezance.jpg"
+      },
+      {
+        category: "soup",
+        title: "Opekané ryžové rezance",
+        desc: "Jemná ryžová príloha s opekanou chuťou.",
+        price: "3,00 €",
+        allergens: "3, 6",
+        image: "MENU FOODIE SPOT/45.Opekané ryžové rezance.jpg"
+      },
+      {
+        category: "soup",
+        title: "Hranolky",
+        desc: "Chrumkavé hranolky ako príloha alebo samostatný snack.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/46.Hranolky.jpg"
+      },
+      {
+        category: "soup",
+        title: "Opekané zemiaky",
+        desc: "Teplá zemiaková príloha s jemne opečenou chuťou.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/47.Opekané zemiaky.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Sake uramaki",
+        desc: "Losos, avokádo a sezam. Porcia 5 ks alebo 10 ks.",
+        price: "od 6,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/80.SAKE  URAMAKI.png"
+      },
+      {
+        category: "sushi",
+        title: "Tobiko uramaki",
+        desc: "Losos, uhorka, avokádo, syr a tobiko.",
+        price: "od 6,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/81.TOBIKO URAMAKI.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Futo sake",
+        desc: "Losos, avokádo, uhorka a krabia tyčinka.",
+        price: "od 6,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/82.Futo sake.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Futo vege",
+        desc: "Mango, uhorka, avokádo, syr a sezam.",
+        price: "od 6,50 €",
+        allergens: "2, 4, 14",
+        image: "MENU FOODIE SPOT/83.Futo vege.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Tempura lososové alebo krevety",
+        desc: "Tempura s avokádom, sezamom a majonézou.",
+        price: "od 6,50 €",
+        allergens: "2, 4",
+        image: "MENU FOODIE SPOT/85.Tempura lososove alebo krevety.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Set 0",
+        desc: "Losos nigiri, krevety nigiri, sake maki a maki krevety.",
+        price: "13,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/86.SET 0.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Set 1",
+        desc: "Sake uramaki, sake maki, nigiri, losos, avokádo a krabia tyčinka.",
+        price: "14,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/87.SET 1.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Lososové maki",
+        desc: "Klasické maki s lososom, dostupné v 8 ks alebo 16 ks.",
+        price: "od 4,80 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/88.Lososove maki.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Avokádo maki",
+        desc: "Jemné maki s avokádom, dostupné v 8 ks alebo 16 ks.",
+        price: "od 4,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/89.Avocado maki.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Uhorkové maki",
+        desc: "Svieže maki s uhorkou, dostupné v 8 ks alebo 16 ks.",
+        price: "od 4,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/90.Uhorkove maki.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Krabia tyčinka maki",
+        desc: "Maki s krabou tyčinkou, dostupné v 8 ks alebo 16 ks.",
+        price: "od 4,50 €",
+        allergens: "2, 4, 14",
+        image: "MENU FOODIE SPOT/91.Krabia tycinka.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Mango maki",
+        desc: "Sladko-svieže maki s mangom.",
+        price: "od 4,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/92.Mango maki.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Ebi maki",
+        desc: "Maki s krevetami, dostupné v 8 ks alebo 16 ks.",
+        price: "od 4,80 €",
+        allergens: "2, 4, 14",
+        image: "MENU FOODIE SPOT/93.Ebi maki.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Lososové nigiri",
+        desc: "Nigiri s lososom, dostupné v 3 ks alebo 6 ks.",
+        price: "od 4,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/94.Lososove nigiri.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Krevetové nigiri",
+        desc: "Nigiri s krevetami, dostupné v 3 ks alebo 6 ks.",
+        price: "od 4,50 €",
+        allergens: "2, 4",
+        image: "MENU FOODIE SPOT/95.Krevetove nigiri.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Set 2",
+        desc: "Ebi tempura, sake maki, nigiri losos, avokádo, majonéza a uhorka.",
+        price: "14,50 €",
+        allergens: "1, 2",
+        image: "MENU FOODIE SPOT/96.SET 2.JPEG"
+      },
+      {
+        category: "sushi",
+        title: "Set 3",
+        desc: "Ebi maki, ebi tempura, ebi nigiri, krevety, majonéza a sezam.",
+        price: "13,50 €",
+        allergens: "1, 2",
+        image: "MENU FOODIE SPOT/97.SET 3.JPEG"
+      },
+      {
+        category: "sushi",
+        title: "Set 4",
+        desc: "Sake maki, avokádo maki, sake nigiri a ebi nigiri.",
+        price: "11,50 €",
+        allergens: "1, 2",
+        image: "MENU FOODIE SPOT/98.SET 4.JPEG"
+      },
+      {
+        category: "sushi",
+        title: "Set 5",
+        desc: "Avokádo maki, uhorka maki a mango maki.",
+        price: "10,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/99.SET 5.jpg"
+      },
+      {
+        category: "sushi",
+        title: "Set 6",
+        desc: "Avokádo maki a lososové maki.",
+        price: "7,50 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/100.SET 6.JPEG"
+      },
+      {
+        category: "sushi",
+        title: "Set 7",
+        desc: "Maki losos, sake uramaki, nigiri sake a maki avokádo.",
+        price: "20,90 €",
+        allergens: "4",
+        image: "MENU FOODIE SPOT/101.SET 7.JPEG"
+      },
+      {
+        category: "drinks",
+        title: "Coca-Cola 500 ml",
+        desc: "Chladený sýtený nápoj vo fľaši.",
+        price: "2,40 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/coca-cola-original-05-l.webp"
+      },
+      {
+        category: "drinks",
+        title: "Coca-Cola Zero 500 ml",
+        desc: "Osviežujúca Coca-Cola bez cukru.",
+        price: "2,40 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/coca-cola-zero.webp"
+      },
+      {
+        category: "drinks",
+        title: "Natura voda 500 ml",
+        desc: "Pramenitá voda nesýtená alebo jemne sýtená.",
+        price: "2,00 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/voda-natura-nesytena.webp"
+      },
+      {
+        category: "drinks",
+        title: "OKF Aloe Vera King 0,5 l",
+        desc: "Aloe vera nápoj s jemnou ovocnou chuťou.",
+        price: "2,80 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Okf Aloe Vera King 0,5l.webp"
+      },
+      {
+        category: "drinks",
+        title: "Fanta Oranžová 500 ml",
+        desc: "Pomarančový sýtený nápoj.",
+        price: "2,40 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Fanta Oranžová 500ml.webp"
+      },
+      {
+        category: "drinks",
+        title: "Vinea 500 ml",
+        desc: "Nealko hroznový nápoj v bielej alebo červenej verzii.",
+        price: "2,40 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Vinea Nealko strik 500ml.jpg"
+      },
+      {
+        category: "drinks",
+        title: "Kofola 500 ml",
+        desc: "Originálna Kofola vo fľaši alebo čapovaná podľa ponuky.",
+        price: "od 1,60 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/KOFOLA original 0,5 L PET.png"
+      },
+      {
+        category: "drinks",
+        title: "VINUT 290 ml",
+        desc: "Ovocný nápoj v príchuti melon, mango, liči alebo jahoda.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/VINUT Mango-290ml.jpg"
+      },
+      {
+        category: "drinks",
+        title: "Foco nápoj 350 ml",
+        desc: "Ovocný nápoj mango, liči, jahoda alebo kokos.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Foco Mango- nápoj 350ml.jpg"
+      },
+      {
+        category: "drinks",
+        title: "Fuzetea 0,5 l",
+        desc: "Zelený ľadový čaj citrus alebo jahoda s aloe vera.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Fuzetea Zelený ľadový čaj Citrus 0,5l.webp"
+      },
+      {
+        category: "drinks",
+        title: "MOGU MOGU 320 ml",
+        desc: "Nápoj s kúskami nata de coco v ovocných príchutiach.",
+        price: "2,50 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/MOGU MOGU nápoj- mango- 320ml.webp"
+      },
+      {
+        category: "drinks",
+        title: "Ovocné čaje",
+        desc: "Marakujový, citrónový, broskyňový, mango alebo jahodový čaj.",
+        price: "od 4,00 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/aloe-vera-mango.jpg"
+      },
+      {
+        category: "drinks",
+        title: "Čerstvé pomaranče",
+        desc: "Čerstvá pomarančová šťava v objeme 0,5 l alebo 1 l.",
+        price: "od 4,00 €",
+        allergens: "",
+        image: "MENU FOODIE SPOT/Foco Mango- nápoj 350ml.jpg"
+      }
+    ];
+
+    const CATEGORY_LABELS = {
+      main: "Hlavné jedlá",
+      sushi: "Sushi",
+      soup: "Polievky & prílohy",
+      drinks: "Nápoje"
+    };
+
+    const restaurantEmail = "Kimtienlvcp92@gmail.com";
+    const menuGrid = document.getElementById("menuGrid");
+    const menuSearch = document.getElementById("menuSearch");
+    const emptyMenu = document.getElementById("emptyMenu");
+    const filterButtons = document.querySelectorAll("[data-filter]");
+    const siteHeader = document.querySelector(".site-header");
+    const scrollProgress = document.getElementById("scrollProgress");
+    const cartDrawer = document.getElementById("cartDrawer");
+    const cartOverlay = document.getElementById("cartOverlay");
+    const cartClose = document.getElementById("cartClose");
+    const cartItems = document.getElementById("cartItems");
+    const cartEmpty = document.getElementById("cartEmpty");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
+    const cartFloatingTotal = document.getElementById("cartFloatingTotal");
+    const invoicePreview = document.getElementById("invoicePreview");
+    const cartForm = document.getElementById("cartForm");
+    const sendCartOrder = document.getElementById("sendCartOrder");
+    const clearCart = document.getElementById("clearCart");
+    const cartStatus = document.getElementById("cartStatus");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let activeFilter = "all";
+    const cart = new Map();
+
+    /* Pomocná funkcia pre bezpečné vloženie textu do HTML. */
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function getCartId(item) {
+      return `${item.category}-${item.title}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    const MENU_LOOKUP = new Map(MENU_ITEMS.map((item) => [getCartId(item), item]));
+
+    function parsePriceValue(price) {
+      const match = String(price).replace(/\s/g, "").replace(",", ".").match(/\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : 0;
+    }
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("sk-SK", {
+        style: "currency",
+        currency: "EUR"
+      }).format(value);
+    }
+
+    /* Focal point giúp crop ảnh món ăn tự nhiên hơn theo từng nhóm ảnh. */
+    function getImageFocus(item) {
+      const title = item.title.toLowerCase();
+
+      if (item.category === "sushi") return "50% 54%";
+      if (item.category === "drinks") return "50% 50%";
+      if (title.includes("bún") || title.includes("phở")) return "50% 48%";
+      if (title.includes("poke")) return "50% 58%";
+      if (title.includes("kačica") || title.includes("kura")) return "50% 46%";
+      if (title.includes("rezance") || title.includes("padthai")) return "50% 52%";
+      if (title.includes("polievka")) return "50% 50%";
+
+      return "50% 50%";
+    }
+
+    function classifyMenuImage(image) {
+      const holder = image.closest(".menu-image");
+      if (!holder || !image.naturalWidth || !image.naturalHeight) return;
+
+      const ratio = image.naturalWidth / image.naturalHeight;
+      holder.classList.toggle("is-portrait", ratio < 0.9);
+      holder.classList.toggle("is-wide", ratio > 1.55);
+    }
+
+    /* Vykreslenie menu kariet s filtrom a vyhľadávaním. */
+    function renderMenu() {
+      const query = menuSearch.value.trim().toLowerCase();
+      const filteredItems = MENU_ITEMS.filter((item) => {
+        const categoryMatch = activeFilter === "all" || item.category === activeFilter;
+        const text = `${item.title} ${item.desc} ${CATEGORY_LABELS[item.category]}`.toLowerCase();
+        return categoryMatch && text.includes(query);
+      });
+
+      menuGrid.innerHTML = filteredItems.map((item, index) => `
+        <article class="menu-card reveal" style="--reveal-delay: ${Math.min(index, 14) * 38}ms;">
+          <div class="menu-image" style="--focus: ${escapeHtml(getImageFocus(item))};">
+            <span class="menu-number">${String(index + 1).padStart(2, "0")}</span>
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">
+          </div>
+          <div class="menu-body">
+            <div class="menu-meta">
+              <span class="menu-category">${escapeHtml(CATEGORY_LABELS[item.category])}</span>
+              <span class="menu-price">${escapeHtml(item.price)}</span>
+            </div>
+            <h3 class="menu-title">${escapeHtml(item.title)}</h3>
+            <p class="menu-desc">${escapeHtml(item.desc)}</p>
+            ${item.allergens ? `<p class="menu-allergens">Alergény: ${escapeHtml(item.allergens)}</p>` : ""}
+            <div class="menu-card-actions">
+              <span class="menu-base-price">Cena v košíku: ${escapeHtml(formatCurrency(parsePriceValue(item.price)))}</span>
+              <button class="menu-add" type="button" data-cart-id="${escapeHtml(getCartId(item))}">Pridať do košíka</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      emptyMenu.classList.toggle("is-visible", filteredItems.length === 0);
+
+      menuGrid.querySelectorAll("img").forEach((image) => {
+        image.addEventListener("load", () => classifyMenuImage(image), { once: true });
+        if (image.complete) classifyMenuImage(image);
+
+        image.addEventListener("error", () => {
+          const holder = image.closest(".menu-image");
+          if (holder) holder.classList.add("is-missing");
+          image.remove();
+        });
+      });
+
+      observeReveals(menuGrid);
+    }
+
+    function getCartTotals() {
+      let quantity = 0;
+      let total = 0;
+
+      cart.forEach((entry) => {
+        quantity += entry.qty;
+        total += parsePriceValue(entry.item.price) * entry.qty;
+      });
+
+      return { quantity, total };
+    }
+
+    function buildInvoiceText() {
+      const { total } = getCartTotals();
+      const formData = new FormData(cartForm);
+      const customerName = formData.get("cartName") || "";
+      const phone = formData.get("cartPhone") || "";
+      const email = formData.get("cartEmail") || "";
+      const note = formData.get("cartNote") || "Bez poznámky";
+      const lines = [];
+
+      lines.push("FOODIE SPOT - SÚHRN OBJEDNÁVKY");
+      lines.push("Panónska cesta 38/A, 851 04 Petržalka");
+      lines.push("");
+      lines.push(`Meno: ${customerName || "-"}`);
+      lines.push(`Telefón: ${phone || "-"}`);
+      lines.push(`E-mail: ${email || "-"}`);
+      lines.push("");
+      lines.push("Položky:");
+
+      if (cart.size === 0) {
+        lines.push("- Košík je prázdny");
+      } else {
+        cart.forEach((entry) => {
+          const unitPrice = parsePriceValue(entry.item.price);
+          const subtotal = unitPrice * entry.qty;
+          lines.push(`- ${entry.qty}x ${entry.item.title} | ${entry.item.price} | ${formatCurrency(subtotal)}`);
+        });
+      }
+
+      lines.push("");
+      lines.push(`Spolu: ${formatCurrency(total)}`);
+      lines.push("");
+      lines.push("Poznámka:");
+      lines.push(note);
+      lines.push("");
+      lines.push("Objednávka bola vytvorená na webe Foodie Spot.");
+
+      return lines.join("\n");
+    }
+
+    function renderCart() {
+      const { quantity, total } = getCartTotals();
+      cartCount.textContent = quantity;
+      cartTotal.textContent = formatCurrency(total);
+      cartFloatingTotal.textContent = formatCurrency(total);
+      cartEmpty.style.display = cart.size ? "none" : "block";
+
+      cartItems.innerHTML = Array.from(cart.entries()).map(([id, entry]) => {
+        const unitPrice = parsePriceValue(entry.item.price);
+        const subtotal = unitPrice * entry.qty;
+
+        return `
+          <article class="cart-item">
+            <img src="${escapeHtml(entry.item.image)}" alt="${escapeHtml(entry.item.title)}" style="--focus: ${escapeHtml(getImageFocus(entry.item))};">
+            <div>
+              <h3>${escapeHtml(entry.item.title)}</h3>
+              <small>${escapeHtml(CATEGORY_LABELS[entry.item.category])} · ${escapeHtml(entry.item.price)}</small>
+              <div class="cart-row">
+                <div class="cart-qty" aria-label="Počet kusov">
+                  <button type="button" data-cart-change="${escapeHtml(id)}" data-delta="-1" aria-label="Znížiť počet">−</button>
+                  <strong>${entry.qty}</strong>
+                  <button type="button" data-cart-change="${escapeHtml(id)}" data-delta="1" aria-label="Zvýšiť počet">+</button>
+                </div>
+                <span class="cart-subtotal">${formatCurrency(subtotal)}</span>
+              </div>
+              <div class="cart-row">
+                <button class="cart-remove" type="button" data-cart-remove="${escapeHtml(id)}">Odstrániť</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      invoicePreview.value = buildInvoiceText();
+    }
+
+    function openCart() {
+      cartDrawer.classList.add("is-open");
+      cartOverlay.hidden = false;
+      requestAnimationFrame(() => cartOverlay.classList.add("is-open"));
+      cartDrawer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      renderCart();
+    }
+
+    function closeCart() {
+      cartDrawer.classList.remove("is-open");
+      cartOverlay.classList.remove("is-open");
+      cartDrawer.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      window.setTimeout(() => {
+        if (!cartDrawer.classList.contains("is-open")) {
+          cartOverlay.hidden = true;
+        }
+      }, 220);
+    }
+
+    function addToCart(id) {
+      const item = MENU_LOOKUP.get(id);
+      if (!item) return;
+
+      const current = cart.get(id);
+      cart.set(id, {
+        item,
+        qty: current ? current.qty + 1 : 1
+      });
+
+      cartStatus.textContent = `${item.title} bolo pridané do košíka.`;
+      renderCart();
+    }
+
+    function changeCartQty(id, delta) {
+      const current = cart.get(id);
+      if (!current) return;
+
+      const nextQty = current.qty + delta;
+      if (nextQty <= 0) {
+        cart.delete(id);
+      } else {
+        cart.set(id, { ...current, qty: nextQty });
+      }
+
+      renderCart();
+    }
+
+    menuGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-cart-id]");
+      if (!button) return;
+
+      addToCart(button.dataset.cartId);
+      openCart();
+    });
+
+    document.querySelectorAll("[data-cart-open]").forEach((button) => {
+      button.addEventListener("click", openCart);
+    });
+
+    cartClose.addEventListener("click", closeCart);
+    cartOverlay.addEventListener("click", closeCart);
+
+    cartItems.addEventListener("click", (event) => {
+      const changeButton = event.target.closest("[data-cart-change]");
+      const removeButton = event.target.closest("[data-cart-remove]");
+
+      if (changeButton) {
+        changeCartQty(changeButton.dataset.cartChange, Number(changeButton.dataset.delta));
+      }
+
+      if (removeButton) {
+        cart.delete(removeButton.dataset.cartRemove);
+        renderCart();
+      }
+    });
+
+    cartForm.addEventListener("input", renderCart);
+
+    clearCart.addEventListener("click", () => {
+      cart.clear();
+      cartStatus.textContent = "Košík bol vymazaný.";
+      renderCart();
+    });
+
+    sendCartOrder.addEventListener("click", () => {
+      if (cart.size === 0) {
+        cartStatus.textContent = "Najprv pridajte aspoň jednu položku do košíka.";
+        return;
+      }
+
+      if (!cartForm.checkValidity()) {
+        cartForm.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(cartForm);
+      const customerName = formData.get("cartName") || "z webu";
+      const subject = `Foodie Spot - objednávka - ${customerName}`;
+      const body = buildInvoiceText();
+      const mailtoLink = `mailto:${restaurantEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      cartStatus.textContent = "Otvárame e-mail s pripravenou objednávkou.";
+      window.location.href = mailtoLink;
+    });
+
+    /* Header, progress bar a drobný tilt efekt na menu kartách. */
+    function syncScrollUi() {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+
+      siteHeader.classList.toggle("is-scrolled", window.scrollY > 18);
+      scrollProgress.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+    }
+
+    window.addEventListener("scroll", syncScrollUi, { passive: true });
+    syncScrollUi();
+
+    if (!reduceMotion) {
+      menuGrid.addEventListener("pointermove", (event) => {
+        const card = event.target.closest(".menu-card");
+        if (!card || !menuGrid.contains(card)) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty("--ry", `${x * 5}deg`);
+        card.style.setProperty("--rx", `${y * -5}deg`);
+      });
+
+      menuGrid.addEventListener("pointerout", (event) => {
+        const card = event.target.closest(".menu-card");
+        if (!card || card.contains(event.relatedTarget)) return;
+
+        card.style.setProperty("--ry", "0deg");
+        card.style.setProperty("--rx", "0deg");
+      });
+    }
+
+    /* Mobilné menu. */
+    const navToggle = document.getElementById("navToggle");
+    const mainNav = document.getElementById("mainNav");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!isOpen));
+      mainNav.classList.toggle("is-open", !isOpen);
+    });
+
+    mainNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navToggle.setAttribute("aria-expanded", "false");
+        mainNav.classList.remove("is-open");
+      });
+    });
+
+    /* Filtrovanie menu. */
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        renderMenu();
+      });
+    });
+
+    menuSearch.addEventListener("input", renderMenu);
+
+    /* Predvoľba typu požiadavky podľa kliknutého CTA tlačidla. */
+    document.querySelectorAll("[data-request]").forEach((link) => {
+      link.addEventListener("click", () => {
+        const radio = document.querySelector(`input[name="requestType"][value="${link.dataset.request}"]`);
+        if (radio) radio.checked = true;
+      });
+    });
+
+    /* Mailto formulár pre rezerváciu alebo objednávku. */
+    const bookingForm = document.getElementById("bookingForm");
+    const formStatus = document.getElementById("formStatus");
+    const dateTimeInput = document.getElementById("datetime");
+
+    function setMinimumDateTime() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      dateTimeInput.min = now.toISOString().slice(0, 16);
+    }
+
+    bookingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(bookingForm);
+      const requestType = formData.get("requestType");
+      const customerName = formData.get("customerName");
+      const phone = formData.get("phone");
+      const email = formData.get("email");
+      const datetime = formData.get("datetime");
+      const guests = formData.get("guests");
+      const note = formData.get("note") || "Bez poznámky";
+
+      const subject = `Foodie Spot - ${requestType} - ${customerName}`;
+      const body = [
+        `Typ požiadavky: ${requestType}`,
+        `Meno a priezvisko: ${customerName}`,
+        `Telefón: ${phone}`,
+        `E-mail: ${email}`,
+        `Dátum a čas: ${datetime}`,
+        `Počet osôb: ${guests}`,
+        "",
+        "Poznámka:",
+        note
+      ].join("\n");
+
+      const mailtoLink = `mailto:${restaurantEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      formStatus.textContent = "Otvárame e-mailovú aplikáciu s vyplnenými údajmi.";
+      window.location.href = mailtoLink;
+    });
+
+    /* Jemné zobrazenie prvkov pri scrollovaní. */
+    let revealObserver;
+
+    function observeReveals(scope = document) {
+      const revealElements = scope.querySelectorAll(".reveal:not(.is-observed)");
+      revealElements.forEach((element) => {
+        element.classList.add("is-observed");
+        if (revealObserver) {
+          revealObserver.observe(element);
+        } else {
+          element.classList.add("is-visible");
+        }
+      });
+    }
+
+    function initReveals() {
+      if (!("IntersectionObserver" in window)) {
+        document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+        return;
+      }
+
+      revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+
+      observeReveals();
+    }
+
+    setMinimumDateTime();
+    initReveals();
+    renderMenu();
+    renderCart();
+  </script>
+</body>
+</html>
