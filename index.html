@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Foodie Spot - moderné ázijské jedlá, sushi, polievky a nápoje v Petržalke. Objednávky a rezervácie online cez e-mail.">
   <title>Foodie Spot | Ázijské jedlá v Petržalke</title>
+  <link rel="icon" type="image/png" href="logo.png">
 
   <style>
     /* =========================
@@ -248,21 +249,19 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-      width: 44px;
-      height: 44px;
-      color: #111111;
-      background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
-      border-radius: var(--radius);
-      font-size: 1.05rem;
-      box-shadow: var(--shadow-gold);
+      width: 50px;
+      height: 50px;
+      background: #050505;
+      border: 1px solid rgba(244, 215, 131, 0.5);
+      border-radius: 50%;
+      box-shadow: 0 10px 28px rgba(215, 163, 58, 0.2);
     }
 
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      border: 1px solid rgba(17, 17, 17, 0.34);
-      border-radius: 5px;
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
     }
 
     .brand-text {
@@ -2111,8 +2110,8 @@
       }
 
       .brand-mark {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
       }
 
       .brand-location {
@@ -2336,7 +2335,9 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#home" aria-label="Foodie Spot domov">
-        <span class="brand-mark">FS</span>
+        <span class="brand-mark">
+          <img src="logo.png" alt="" width="50" height="50">
+        </span>
         <span class="brand-text">
           <span class="brand-name">Foodie Spot</span>
           <span class="brand-location">Panónska cesta 38/A</span>
