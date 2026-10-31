@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Foodie Spot - moderné ázijské jedlá, sushi, polievky a nápoje v Petržalke. Objednávky a rezervácie online cez e-mail.">
+  <meta name="description" content="Foodie Spot - moderné ázijské jedlá, sushi, polievky a nápoje v Petržalke. Objednávky a rezervácie online cez WhatsApp.">
   <title>Foodie Spot | Ázijské jedlá v Petržalke</title>
   <link rel="icon" type="image/png" href="assets/optimized/favicon.png">
   <link rel="preload" as="image" href="assets/optimized/39. Kuracie Grilované s arašidovou omáčkou.webp">
@@ -2415,7 +2415,7 @@
         <strong id="cartTotal">0,00 €</strong>
       </div>
       <div class="cart-actions">
-        <button class="btn btn-primary" type="button" id="sendCartOrder">Odoslať na Gmail</button>
+        <button class="btn btn-primary" type="button" id="sendCartOrder">Odoslať cez WhatsApp</button>
         <button class="cart-clear" type="button" id="clearCart">Vymazať</button>
       </div>
       <p class="cart-status" id="cartStatus" role="status"></p>
@@ -2453,8 +2453,8 @@
               <span>851 04 Petržalka</span>
             </div>
             <div class="hero-fact">
-              <strong>Objednávka cez e-mail</strong>
-              <span>Kimtienlvcp92@gmail.com</span>
+              <strong>Objednávka cez WhatsApp</strong>
+              <span>0947978888</span>
             </div>
           </div>
         </div>
@@ -2511,7 +2511,7 @@
           <ul class="about-list">
             <li>Menu s reálnymi jedlami a cenami podľa pokladničného cenníka Foodie Spot.</li>
             <li>Výber pre milovníkov mäsa, kreviet, lososa, tofu aj ľahších poke jedál.</li>
-            <li>Jednoduchá rezervácia alebo objednávka cez e-mail s vyplnenými údajmi.</li>
+            <li>Jednoduchá rezervácia alebo objednávka cez WhatsApp s vyplnenými údajmi.</li>
           </ul>
 
           <div class="about-stats">
@@ -2585,11 +2585,11 @@
         <div class="reservation-copy reveal">
           <span class="section-kicker">Objednávka a rezervácia</span>
           <h2 class="section-title">Pošlite nám údaje jedným kliknutím.</h2>
-          <p class="section-copy">Vyplňte formulár a stránka otvorí e-mailového klienta s pripravenou správou pre Foodie Spot. Rezerváciu alebo objednávku potvrdíme podľa dostupnosti.</p>
+          <p class="section-copy">Vyplňte formulár a stránka otvorí WhatsApp s pripravenou správou pre Foodie Spot. Rezerváciu alebo objednávku potvrdíme podľa dostupnosti.</p>
 
           <div class="contact-strip">
             <a href="tel:0947978888"><span class="icon" aria-hidden="true">☎</span><span>0947978888</span></a>
-            <a href="mailto:Kimtienlvcp92@gmail.com"><span class="icon" aria-hidden="true">✉</span><span>Kimtienlvcp92@gmail.com</span></a>
+            <a href="https://wa.me/421947978888" target="_blank" rel="noopener"><span class="icon" aria-hidden="true">✆</span><span>WhatsApp: 0947978888</span></a>
             <span><span class="icon" aria-hidden="true">⌖</span><span>Panónska cesta 38/A, 851 04 Petržalka</span></span>
           </div>
         </div>
@@ -2622,7 +2622,7 @@
 
             <div class="field">
               <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" autocomplete="email" required>
+              <input id="email" name="email" type="email" autocomplete="email">
             </div>
 
             <div class="field">
@@ -2641,9 +2641,9 @@
             </div>
           </div>
 
-          <p class="form-note">Odoslanie otvorí správu v e-mailovej aplikácii. Príjemca: <strong>Kimtienlvcp92@gmail.com</strong></p>
+          <p class="form-note">Odoslanie otvorí pripravenú správu vo WhatsAppe. Príjemca: <strong>0947978888</strong></p>
           <div class="submit-row">
-            <button class="btn btn-primary" type="submit">Odoslať cez e-mail</button>
+            <button class="btn btn-primary" type="submit">Odoslať cez WhatsApp</button>
             <a class="btn btn-outline" href="tel:0947978888">Zavolať</a>
           </div>
           <p class="form-status" id="formStatus" role="status"></p>
@@ -2656,7 +2656,7 @@
       <div class="container">
         <span class="section-kicker reveal">Kontakt</span>
         <h2 class="section-title reveal">Nájdete nás v Petržalke.</h2>
-        <p class="section-copy reveal">Zastavte sa osobne, zavolajte nám alebo pošlite e-mail s objednávkou či rezerváciou.</p>
+        <p class="section-copy reveal">Zastavte sa osobne, zavolajte nám alebo pošlite objednávku či rezerváciu cez WhatsApp.</p>
 
         <div class="contact-grid">
           <div class="contact-stack">
@@ -3402,7 +3402,7 @@
       drinks: "Nápoje"
     };
 
-    const restaurantEmail = "Kimtienlvcp92@gmail.com";
+    const restaurantWhatsApp = "421947978888";
     const menuGrid = document.getElementById("menuGrid");
     const menuSearch = document.getElementById("menuSearch");
     const emptyMenu = document.getElementById("emptyMenu");
@@ -3710,14 +3710,11 @@
         return;
       }
 
-      const formData = new FormData(cartForm);
-      const customerName = formData.get("cartName") || "z webu";
-      const subject = `Foodie Spot - objednávka - ${customerName}`;
       const body = buildInvoiceText();
-      const mailtoLink = `mailto:${restaurantEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const whatsappLink = `https://wa.me/${restaurantWhatsApp}?text=${encodeURIComponent(body)}`;
 
-      cartStatus.textContent = "Otvárame e-mail s pripravenou objednávkou.";
-      window.location.href = mailtoLink;
+      cartStatus.textContent = "Otvárame WhatsApp s pripravenou objednávkou.";
+      window.location.href = whatsappLink;
     });
 
     /* Header, progress bar a drobný tilt efekt na menu kartách. */
@@ -3790,7 +3787,7 @@
       });
     });
 
-    /* Mailto formulár pre rezerváciu alebo objednávku. */
+    /* WhatsApp formulár pre rezerváciu alebo objednávku. */
     const bookingForm = document.getElementById("bookingForm");
     const formStatus = document.getElementById("formStatus");
     const dateTimeInput = document.getElementById("datetime");
@@ -3812,8 +3809,9 @@
       const guests = formData.get("guests");
       const note = formData.get("note") || "Bez poznámky";
 
-      const subject = `Foodie Spot - ${requestType} - ${customerName}`;
       const body = [
+        `FOODIE SPOT - ${requestType}`,
+        "",
         `Typ požiadavky: ${requestType}`,
         `Meno a priezvisko: ${customerName}`,
         `Telefón: ${phone}`,
@@ -3825,9 +3823,9 @@
         note
       ].join("\n");
 
-      const mailtoLink = `mailto:${restaurantEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      formStatus.textContent = "Otvárame e-mailovú aplikáciu s vyplnenými údajmi.";
-      window.location.href = mailtoLink;
+      const whatsappLink = `https://wa.me/${restaurantWhatsApp}?text=${encodeURIComponent(body)}`;
+      formStatus.textContent = "Otvárame WhatsApp s vyplnenými údajmi.";
+      window.location.href = whatsappLink;
     });
 
     /* Jemné zobrazenie prvkov pri scrollovaní. */
